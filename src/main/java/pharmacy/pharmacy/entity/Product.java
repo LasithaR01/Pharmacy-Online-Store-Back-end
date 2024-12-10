@@ -16,6 +16,8 @@ public class Product {
 
     private String description;
 
+    private Long categoryId;
+
     public Long getId() {
         return id;
     }
@@ -30,6 +32,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getDescription() {
