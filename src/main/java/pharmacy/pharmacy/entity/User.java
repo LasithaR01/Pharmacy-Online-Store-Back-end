@@ -1,15 +1,18 @@
 package pharmacy.pharmacy.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "user")
 public class User {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Auto-increment for ID
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(nullable = false)
@@ -22,8 +25,8 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING) // For storing Enum as a String
-    private Role role; // Enum for roles: Admin, Pharmacist, Customer
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "contact_number")
     private String contactNumber;
@@ -31,7 +34,9 @@ public class User {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Timestamp createdAt;
 
-    // Enum for role values
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Prescription> prescriptions;
+
     public enum Role {
         Admin, Pharmacist, Customer
     }
@@ -95,6 +100,14 @@ public class User {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Prescription> getPrescriptions() {
+        return prescriptions;
+    }
+
+    public void setPrescriptions(List<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
     }
 
     // PrePersist to initialize createdAt before saving to database
